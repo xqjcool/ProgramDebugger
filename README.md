@@ -22,9 +22,9 @@
 
 ```bash
 echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
-
+```
 使用方法
 
 ```bash
 ./injector <pid> <full-path-to-hook.so>
-
+```
