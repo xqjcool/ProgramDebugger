@@ -1,0 +1,12 @@
+# 编译产物
+injector
+
+# 编辑器/系统临时文件
+*.swp
+*.swo
+*.bak
+*.log
+*.out
+
+# MacOS
+.DS_Store
