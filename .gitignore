@@ -1,5 +1,7 @@
 # 编译产物
-injector
+/build/
+/*.o
+*.so
 
 # 编辑器/系统临时文件
 *.swp
