@@ -7,7 +7,7 @@
 
 ---
 
-## ✨ 功能特性
+## 功能特性
 
 - 基于 `ptrace` 实现的安全注入，不依赖目标程序特定实现。
 - 可注入任意自定义 `.so` 文件，只要目标函数在符号表中存在。
@@ -15,7 +15,7 @@
 
 ---
 
-## ⚙️ 使用要求
+## 使用要求
 
 - 被注入的目标进程必须是当前用户可调试的（或具有 root 权限）。
 - 目标进程的可执行文件应未开启 `ptrace_scope` 限制，或你已手动关闭：
@@ -23,8 +23,31 @@
 ```bash
 echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 ```
-使用方法
+## 使用方法
+
+### 编译
+
+- 全部编译
 
 ```bash
-./injector <pid> <full-path-to-hook.so>
+make
+```
+
+- 单独编译某个sample
+
+```bash
+cd samples/test_print
+make
+```
+### 使用
+
+1. 启动目标进程
+2. 执行注入命令
+`./injector <pid> <full-path-to-hook.so>`
+
+举例
+
+```bash
+./samples/hook_test_print/test_print_target
+./injector $(pidof test_print_target) ./samples/test_print/test_print.so
 ```
