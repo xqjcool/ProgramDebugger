@@ -1,6 +1,6 @@
-# Injector - Linux 动态库注入工具
+# ProgramDebugger - Linux进程动态调试工具
 
-`injector` 是一个用于将调试用 `.so` 文件注入到运行中的 Linux 进程中的小型工具。它适用于如下场景：
+`ProgrameDebugger` 是一个用于将调试代码编译成 `.so` 文件，通过`injector`注入到运行中的 Linux 进程中的小型工具。它适用于如下场景：
 
 - **热补丁（Hotpatch）**：无需重启目标程序，通过注入 `.so` 动态库，替换或修复有问题的函数。
 - **运行时调试**：注入带有日志或调试逻辑的动态库，实时分析程序行为，便于问题定位。
@@ -44,10 +44,15 @@ make
 1. 启动目标进程
 2. 执行注入命令
 `./injector <pid> <full-path-to-hook.so>`
+3. 恢复被调试函数
+`kill -SIGUSR2 <pid>`
 
 举例
 
 ```bash
-./samples/hook_test_print/test_print_target
-./injector $(pidof test_print_target) ./samples/test_print/test_print.so
+./samples/hook_test_print/test_print_target &
+//调试目标进程的目标函数
+./samples/injector $(pidof test_print_target) ./samples/test_print/test_print.so
+//恢复目标进程的目标函数
+kill -SIGUSR2 $(pidof test_print_target)
 ```
