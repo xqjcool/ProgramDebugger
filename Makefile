@@ -2,13 +2,14 @@ CC = gcc
 CFLAGS = -Wall -Wextra -O2 -g
 LDFLAGS = -ldl
 
-INJECTOR = injector
+INJECTOR = samples/injector
+INJECTOR_C = src/injector.c
 
 .PHONY: all clean samples
 
 all: $(INJECTOR) samples
 
-$(INJECTOR): injector.c
+$(INJECTOR): $(INJECTOR_C)
 	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
 
 samples:

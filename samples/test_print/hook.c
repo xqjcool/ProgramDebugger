@@ -5,37 +5,31 @@
 #include <sys/mman.h>
 #include <errno.h>
 #include <dlfcn.h>
+#include "funchook.h"
 
+HOOK_DEFINE(test_print, void, void)
+{
+	printf("[%s:%d]\n", __func__, __LINE__);
+	CALL_ORIG_FUNCION(test_print);
+	printf("[%s:%d]\n", __func__, __LINE__);
+}
+
+#if 0
 void test_print();
 
 void hook_print() {
     printf("new hook_print\n");
 }
-
 void* get_page_start(void* addr) {
     return (void *)((uintptr_t)addr & ~(getpagesize() - 1));
 }
+#endif
 
 __attribute__((constructor)) void do_hook(void) {
-    void *orig = (void *)test_print;
-    void *hook = (void *)hook_print;
+    printf("[hook.so] Injecting hook: \n");
 
-    printf("[hook.so] Injecting hook: %p → %p\n", orig, hook);
+    HOOK_REGISTER(test_print);
 
-    if (mprotect(get_page_start(orig), getpagesize(), PROT_READ | PROT_WRITE | PROT_EXEC) != 0) {
-        perror("mprotect failed");
-        return;
-    }
-
-    unsigned char patch[14] = {
-        0x48, 0xB8,                        // mov rax, imm64
-        0, 0, 0, 0, 0, 0, 0, 0,            // imm64
-        0xFF, 0xE0                         // jmp rax
-    };
-    memcpy(&patch[2], &hook, 8);
-
-    memcpy(orig, patch, sizeof(patch));
-
-    printf("[hook.so] Hook installed successfully.\n");
+    printf("[hook.so] Hook installed successfully. *pptr:%p\n", ptr_test_print);
 }
 
