@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -O1 -g -I../../include
+CFLAGS = -Wall -O1 -g -I../../include
 LDFLAGS = -ldl
 MODULE_NAME := $(notdir $(CURDIR))
 SO_TARGET = $(MODULE_NAME).so

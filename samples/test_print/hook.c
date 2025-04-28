@@ -7,29 +7,19 @@
 #include <dlfcn.h>
 #include "funchook.h"
 
-HOOK_DEFINE(test_print, void, void)
+HOOK_DEFINE(test_print, void, long rnd)
 {
-	printf("[%s:%d]\n", __func__, __LINE__);
-	CALL_ORIG_FUNCION(test_print);
-	printf("[%s:%d]\n", __func__, __LINE__);
+	int changed = rnd % 100;
+	printf("[%s:%d] passed rnd:%ld\n", __func__, __LINE__, rnd);
+	CALL_ORIG_FUNCION(test_print, changed);
+	printf("[%s:%d] changed rnd:%d\n", __func__, __LINE__, changed);
 }
-
-#if 0
-void test_print();
-
-void hook_print() {
-    printf("new hook_print\n");
-}
-void* get_page_start(void* addr) {
-    return (void *)((uintptr_t)addr & ~(getpagesize() - 1));
-}
-#endif
 
 __attribute__((constructor)) void do_hook(void) {
     printf("[hook.so] Injecting hook: \n");
 
     HOOK_REGISTER(test_print);
 
-    printf("[hook.so] Hook installed successfully. *pptr:%p\n", ptr_test_print);
+    printf("[hook.so] Hook installed successfully.\n");
 }
 
