@@ -21,10 +21,10 @@
 HOOK_DEFINE(test_print, void, long rnd)
 {
 	int changed = rnd % 100;
-	printf("[%s:%d] passed rnd:%ld\n", __func__, __LINE__, rnd);
+	printf("[%s:%d] DEBUG passed rnd:%ld, we change it to %d\n", __func__, __LINE__, rnd, changed);
 	/* 3. call the original function */
 	CALL_ORIG_FUNCION(test_print, changed);
-	printf("[%s:%d] changed rnd:%d\n", __func__, __LINE__, changed);
+	printf("[%s:%d] DEBUG changed rnd:%d\n", __func__, __LINE__, changed);
 }
 
 /* constructor function */

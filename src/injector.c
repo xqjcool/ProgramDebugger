@@ -1,15 +1,19 @@
-#define _GNU_SOURCE
+/*
+ * Copyright (c) 2025 
+ *
+ * injector.c - injector implementation
+ * author: Xing Qingjie <xqjcool@gmail.com>
+ * version: 1.0.0
+ * history: 04/27/2025	created
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/uio.h>
 #include <sys/ptrace.h>
 #include <sys/wait.h>
 #include <sys/user.h>
 #include <dlfcn.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <errno.h>
 #include <stdarg.h>
 
 #define DLOPEN_PARAMS_NUM	2
@@ -118,7 +122,7 @@ int main(int argc, char *argv[]) {
 	so_path = argv[2];
 
 	local_libc = get_libc_base(0);
-	local_dlopen = dlsym(RTLD_NEXT, "dlopen");
+	local_dlopen = dlsym(NULL, "dlopen");
 	dlopen_offset = (char *)local_dlopen - (char *)local_libc;
 	printf("[+] Local libc base:%p, dlopen offset: 0x%lx\n", local_libc, dlopen_offset);
 
